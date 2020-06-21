@@ -1,0 +1,163 @@
+//Freddy Valverde
+//Documentos
+//Documento1
+ {
+  "tipo": "Motocicleta",
+  "matricula": "333YYZ",
+  "clasificacion": "B",
+  "color": "Negro",
+  "plazas": "2"
+ }
+//Documento2
+ {
+  "tipo": "Tractor",
+  "matricula": "E99999",
+  "clasificacion": "E",
+  "color": "azul",
+  "plazas": "2",
+  "carga_maxima": "20T"
+ }
+//Documento3
+ {
+  "tipo": "Camión",
+  "matricula": "A98450",
+  "clasificacion": "A",
+  "color": "Negro",
+  "plazas": "2",
+  "carga_maxima": "10T"
+ }
+//Documento4
+ {
+  "tipo": "Volqueta",
+  "matricula": "39FN46",
+  "clasificacion": "C",
+  "color": "Negro",
+  "plazas": "2",
+  "carga_maxima": "20T"
+ }
+//Documento5
+ {
+  "tipo": "Bus",
+  "matricula": "12948A",
+  "clasificacion": "B",
+  "color": "Rojo",
+  "plazas": "33"
+ }
+//Documento6
+ {
+  "tipo": "Limosina",
+  "matricula": "CM4I53",
+  "clasificacion": "B",
+  "color": "Negro",
+  "plazas": "6"
+ }
+//Documento7
+ {
+  "tipo": "Retroescavadora",
+  "matricula": "12345F",
+  "clasificacion": "C",
+  "color": "Amarilla",
+  "plazas": "1",
+  "carga_maxima": "4T"
+ }
+//Documento8
+ {
+  "tipo": "Lancha",
+  "matricula": "MNGLG5",
+  "clasificacion": "A",
+  "color": "Ploma",
+  "plazas": "4",
+  "carga_maxima": "6T"
+ }
+//Documento9
+ {
+  "tipo": "Bote",
+  "matricula": "K98765",
+  "clasificacion": "B",
+  "color": "Azul",
+  "plazas": "4",
+  "carga_maxima": "4T"
+ }
+//documento10
+ {
+  "tipo": "Avioneta",
+  "matricula": "876598",
+  "clasificacion": "A",
+  "color": "Blanca",
+  "plazas": "5",
+  "carga_maxima": "2T"
+ }
+//Funciones
+	//Funcion1
+	//Esta función muestra el campo clasificación correspondiente a cada documento
+            function (doc) {
+		 if(doc.clasificacion){
+		   emit(doc.clasificacion);
+		  }
+	     }
+	//Funcion2
+	//Esta función devuelve el tipo y color de los documentos que tengan color "Negro"
+		function (doc) {
+		  if(doc.color=="Negro"){
+		      emit(doc.tipo,doc.color);
+		  }
+		}
+	//Funcion3
+	//Esta función devuelve el tipo y numero de plazas de los documentos con plazas mayores a 4
+		function (doc) {
+		   if(doc.plazas>4){
+		      emit(doc.tipo,doc.plazas)
+		   }
+		}
+	//Funcion4
+	//Devuelve el tipo y carga maxima de los documentos que solo tinene carga maxima
+ 		function (doc) {
+		    if(doc.carga_maxima){
+			emit(doc.tipo,doc.carga_maxima)
+		    }
+		}
+	//Funcion5
+	//Devuelve las matriculas que no son numericas
+		function (doc) {
+		    if(doc.matricula!=0){
+		      emit(doc.tipo,doc.matricula);
+		    }
+		}
+	//Funcion6
+	//Devuelve los tipos que incian con la letra "L"
+		function (doc) {
+		    if(doc.tipo.startsWith(\"L\")){
+		        emit(doc.tipo);
+		    }
+		}
+	//Funcion7
+	//Devuelve las matriculas que terminan en "5"
+ 		function (doc) {
+ 		   if(doc.matricula.endsWith(\"5\")){
+		       emit(doc.tipo,doc.matricula);
+		    }
+		}
+	//Funcion8
+	//Devuelve la sumatoria de plazas en base a la clasificación "A-B-C"
+        "reduce": "_sum",
+ 		"function (doc) {
+		    if(doc.clasificacion){
+		        emit(doc.clasificacion,parseInt(doc.plazas));
+		    }
+		}
+	//Funcion9
+	//Devuelve la cantidad de vehiculos con carga maxima por cada plaza existente
+    	"reduce": "_count",
+		function (doc) {
+		    if(doc.carga_maxima){
+			emit(parseInt(doc.plazas))
+		    }
+		}
+	//Funcion10
+	//Devuelve la cantidad por color de los tipos terminados en "a"
+	"reduce": "_count"
+		function (doc) {
+		    if(doc.tipo.endsWith(\"a\")){
+			emit(doc.color);
+		    }
+		}
